@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Mi Amor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #fff0f3;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .animation-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin-bottom: 30px;
+        }
+
+        /* Tallo de la flor */
+        .stem {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 10px;
+            height: 0;
+            background-color: #2a9d8f;
+            animation: growStem 2s forwards;
+            z-index: 1;
+        }
+
+        /* Ramas del tallo */
+        .branch {
+            position: absolute;
+            width: 5px;
+            background-color: #2a9d8f;
+            opacity: 0;
+            z-index: 1;
+        }
+
+        .branch-1 {
+            transform: rotate(30deg);
+            transform-origin: bottom left;
+            animation: growBranch1 1s forwards 1.5s;
+        }
+
+        .branch-2 {
+            transform: rotate(30deg);
+            transform-origin: bottom right;
+            animation: growBranch2 1s forwards 1.8s;
+        }
+
+        .branch-3 {
+            transform: rotate(-30deg);
+            transform-origin: bottom right;
+            animation: growBranch3 1s forwards 1.8s;
+        }
+
+        .branch-4 {
+            transform: rotate(-30deg);
+            transform-origin: bottom right;
+            animation: growBranch4 1s forwards 1.8s;
+        }
+
+
+        /* Botón de la flor */
+        .bud {
+            position: absolute;
+            top: 120px;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            background-color: #e63946;
+            border-radius: 50%;
+            transform: translateX(-50%) scale(0);
+            opacity: 0;
+            z-index: 3;
+            animation: showBud 0.5s forwards 2.5s;
+        }
+
+        /* Flor rosa */
+        .flower {
+            position: absolute;
+            top: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 60px;
+            opacity: 0;
+            z-index: 2;
+            animation: showFlower 0.5s forwards 3.5s;
+        }
+
+        .petal {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #ffb1c1;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+        }
+
+        .center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 18px;
+            height: 18px;
+            background-color: #ffffff;
+            border-radius: 50%;
+            z-index: 3;
+        }
+
+        /* Círculos amarillos alrededor */
+        .sunflower-container {
+            position: absolute;
+            top: 113px;
+            left: 44%;
+            transform: translateX(-50%);
+            width: -10px;
+            height: -10px;
+            opacity: 0;
+            z-index: 1;
+            animation: showSunflowers 0.5s forwards 4.5s;
+        }
+
+        .sunflower {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background-color: #ffdd57;
+            border-radius: 50%;
+        }
+
+        /* Corazón */
+        .heart-container {
+            position: absolute;
+            top: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 160px;
+            height: 160px;
+            opacity: 0;
+            z-index: 3;
+        }
+
+        .heart-dot {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background-color: #ff6b6b;
+            border-radius: 50%;
+        }
+
+        /* Contador */
+        .counter {
+            text-align: center;
+            margin: 60px 0;
+            opacity: 0;
+            animation: fadeIn 1s forwards 8s;
+        }
+
+        .counter-title {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .counter-digits {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .counter-block {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            min-width: 60px;
+        }
+
+        .counter-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #e63946;
+        }
+
+        .counter-label {
+            font-size: 12px;
+            color: #666;
+            margin-top: 2px;
+        }
+
+        /* Mensaje */
+        .message {
+            text-align: center;
+            font-size: 18px;
+            line-height: 1.5;
+            margin-top: 30px;
+            opacity: 0;
+            color: #333;
+            animation: fadeIn 1s forwards 8.5s;
+            max-width: 450px;
+        }
+
+        /* Animaciones */
+        @keyframes growStem {
+            0% {
+                height: 0;
+            }
+            100% {
+                height: 120px;
+            }
+        }
+
+        @keyframes growBranch1 {
+            0% {
+                height: 0;
+                opacity: 0;
+                bottom: 20px;
+                left: calc(50% - 5px);
+            }
+            100% {
+                height: 30px;
+                opacity: 1;
+                bottom: 20px;
+                left: calc(50% - 5px);
+            }
+        }
+
+        @keyframes growBranch2 {
+            0% {
+                height: 0;
+                opacity: 0;
+                bottom: 50px;
+                left: calc(50% - 5px);
+            }
+            100% {
+                height: 30px;
+                opacity: 1;
+                bottom: 50px;
+                left: calc(50% - 5px);
+            }
+        }
+
+        @keyframes growBranch3 {
+            0% {
+                height: 0;
+                opacity: 0;
+                bottom: 55px;
+                left: calc(50% - 5px);
+            }
+            100% {
+                height: 30px;
+                opacity: 1;
+                bottom: 55px;
+                left: calc(50% - 5px);
+            }
+        }
+
+        @keyframes growBranch4 {
+            0% {
+                height: 0;
+                opacity: 0;
+                bottom: 25px;
+                left: calc(50% - 5px);
+            }
+            100% {
+                height: 30px;
+                opacity: 1;
+                bottom: 25px;
+                left: calc(50% - 5px);
+            }
+        }
+
+        @keyframes showBud {
+            0% {
+                opacity: 0;
+                transform: translateX(-50%) scale(0);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(-50%) scale(1);
+            }
+        }
+
+        @keyframes showFlower {
+            0% {
+                opacity: 0;
+                transform: translateX(-50%) scale(0);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(-50%) scale(1);
+            }
+        }
+
+        @keyframes showSunflowers {
+            0% {
+                opacity: 0;
+                transform: translateX(-50%) scale(0);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(-50%) scale(1);
+            }
+        }
+
+        @keyframes fadeOut {
+            0% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        @keyframes heartBeat {
+            0%, 100% {
+                transform: translateX(-50%) scale(1);
+            }
+            50% {
+                transform: translateX(-50%) scale(1.05);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .animation-container {
+                width: 250px;
+                height: 250px;
+            }
+
+            .message {
+                font-size: 16px;
+            }
+
+            .counter-block {
+                min-width: 50px;
+                padding: 8px;
+            }
+
+            .counter-number {
+                font-size: 20px;
+            }
+        }
+        .texto-teamo{
+            margin-top: 50%;
+            margin-left: 25%;
+            font-size: 21px;
+            font-weight: bold;
+            color: red;
+            }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="animation-container">
+            <div id="stem" class="stem"></div>
+            <div id="branch1" class="branch branch-1"></div>
+            <div id="branch2" class="branch branch-2"></div>
+            <div id="branch3" class="branch branch-3"></div>
+            <div id="branch4" class="branch branch-4"></div>
+            <div id="bud" class="bud"></div>
+            <div class="flower" id="flower"></div>
+            <div class="sunflower-container" id="sunflower-container"></div>
+            <div class="heart-container" id="heart-container">
+                <p class="texto-teamo">TE AMO</p>
+            </div>
+        </div>
+
+        <div class="counter">
+            <div class="counter-title">Tiempo juntos desde el 15/01/2025</div>
+            <div class="counter-digits">
+                <div class="counter-block">
+                    <div class="counter-number" id="days">0</div>
+                    <div class="counter-label">Días</div>
+                </div>
+                <div class="counter-block">
+                    <div class="counter-number" id="hours">0</div>
+                    <div class="counter-label">Horas</div>
+                </div>
+                <div class="counter-block">
+                    <div class="counter-number" id="minutes">0</div>
+                    <div class="counter-label">Minutos</div>
+                </div>
+                <div class="counter-block">
+                    <div class="counter-number" id="seconds">0</div>
+                    <div class="counter-label">Segundos</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="message" id="message"></div>
+    </div>
+
+    <script>
+        // Espero a que el DOM esté completamente cargado
+        document.addEventListener('DOMContentLoaded', function() {
+            // Defino las variables principales
+            const flower = document.getElementById('flower');
+            const bud = document.getElementById('bud');
+            const sunflowerContainer = document.getElementById('sunflower-container');
+            const heartContainer = document.getElementById('heart-container');
+            const messageElement = document.getElementById('message');
+            const stem = document.getElementById('stem');
+            const branch1 = document.getElementById('branch1');
+            const branch2 = document.getElementById('branch2');
+            const branch3 = document.getElementById('branch3');
+            const branch4 = document.getElementById('branch4');
+            
+            // Creo los pétalos de la flor
+            createFlower();
+            
+            // Creo los círculos amarillos alrededor
+            createSunflowers();
+            
+            // Programo la transición a corazón
+            setTimeout(() => {
+                // Desvanezco la flor y los girasoles
+                flower.style.animation = 'fadeOut 0.5s forwards';
+                sunflowerContainer.style.animation = 'fadeOut 0.5s forwards';
+                bud.style.animation = 'fadeOut 0.5s forwards';
+                stem.style.animation = 'fadeOut 0.5s forwards';
+                branch1.style.animation = 'fadeOut 0.5s forwards';
+                branch2.style.animation = 'fadeOut 0.5s forwards';
+                branch3.style.animation = 'fadeOut 0.5s forwards';
+                branch4.style.animation = 'fadeOut 0.5s forwards';
+    
+                // Creo y muestro el corazón con pequeños puntos
+                setTimeout(() => {
+                    createHeart();
+                    heartContainer.style.opacity = '1';
+                    heartContainer.style.animation = 'heartBeat 1.5s infinite';
+                }, 500);
+            }, 6500);
+            
+            // Inicio el contador
+            startCounter();
+            
+            // Inicio la animación de escritura del mensaje
+            setTimeout(() => {
+                // Texto a mostrar con efecto máquina de escribir
+                const text = "Mi amor, te amo con todo mi corazón, eres lo más bonito que tengo en mi mundo y siempre seremos tu y yo, nunca ólvides que eres el amor de mi vida y la mujer de mis sueños. 🤍🤍";
+                typeWriter(text, 0);
+            }, 8500);
+            
+            // Función para crear la flor
+            function createFlower() {
+                // Creo 8 pétalos para la flor
+                for (let i = 0; i < 8; i++) {
+                    const petal = document.createElement('div');
+                    petal.className = 'petal';
+                    
+                    // Calculo la posición del pétalo en un círculo
+                    const angle = (i * (360 / 8)) * (Math.PI / 180);
+                    const radius = 20;
+                    const x = radius * Math.cos(angle);
+                    const y = radius * Math.sin(angle);
+                    
+                    // Establezco la posición
+                    petal.style.left = `calc(50% + ${x}px)`;
+                    petal.style.top = `calc(50% + ${y}px)`;
+                    
+                    // Añado el pétalo a la flor
+                    flower.appendChild(petal);
+                }
+                
+                // Añado el centro de la flor
+                const center = document.createElement('div');
+                center.className = 'center';
+                flower.appendChild(center);
+            }
+            
+            // Función para crear los círculos amarillos (girasoles)
+            function createSunflowers() {
+                const numSunflowers = 12;
+                
+                for (let i = 0; i < numSunflowers; i++) {
+                    const sunflower = document.createElement('div');
+                    sunflower.className = 'sunflower';
+                    
+                    // Calculo la posición en un círculo
+                    const angle = (i * (360 / numSunflowers)) * (Math.PI / 180);
+                    const radius = 50;
+                    const x = radius * Math.cos(angle);
+                    const y = radius * Math.sin(angle);
+                    
+                    // Establezco la posición
+                    sunflower.style.left = `calc(50% + ${x}px)`;
+                    sunflower.style.top = `calc(50% + ${y}px)`;
+                    
+                    // Añado el círculo al contenedor
+                    sunflowerContainer.appendChild(sunflower);
+                }
+            }
+            
+            // Función para crear el corazón con pequeños puntos
+            function createHeart() {
+                // Número de puntos para formar el corazón
+                const numDots = 200;
+                
+                // Diferentes tonos de rojo y rosa para los puntos
+                const colors = ['#ff6b6b', '#ff8585', '#ff4d6d', '#e63946', '#ff758f'];
+                
+                for (let i = 0; i < numDots; i++) {
+                    const dot = document.createElement('div');
+                    dot.className = 'heart-dot';
+                    
+                    // Selecciono un color aleatorio
+                    const color = colors[Math.floor(Math.random() * colors.length)];
+                    dot.style.backgroundColor = color;
+                    
+                    // Calculo la posición basada en la ecuación paramétrica de un corazón
+                    const t = Math.random() * 2 * Math.PI;
+                    const scale = 8;
+                    
+                    // Ecuación paramétrica de corazón: x = 16sin³(t), y = 13cos(t) - 5cos(2t) - 2cos(3t) - cos(4t)
+                    const x = scale * 16 * Math.pow(Math.sin(t), 3);
+                    const y = -scale * (13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t));
+                    
+                    // Establezco la posición
+                    dot.style.left = `calc(50% + ${x}px)`;
+                    dot.style.top = `calc(50% + ${y}px)`;
+                    
+                    // Añado algo de aleatoriedad al tamaño
+                    const size = 4 + Math.random() * 4;
+                    dot.style.width = `${size}px`;
+                    dot.style.height = `${size}px`;
+                    
+                    // Añado el punto al contenedor del corazón
+                    heartContainer.appendChild(dot);
+                }
+            }
+            
+            // Función para actualizar el contador
+            function startCounter() {
+                // Fecha de inicio (15 de enero de 2025)
+                const startDate = new Date('2025-01-15T00:00:00');
+                
+                // Actualizo el contador cada segundo
+                setInterval(updateCounter, 1000);
+                
+                // Función para actualizar el contador
+                function updateCounter() {
+                    // Obtengo la fecha actual
+                    const now = new Date();
+                    
+                    // Calculo la diferencia en milisegundos
+                    const diff = now - startDate;
+                    
+                    // Calculo días, horas, minutos y segundos
+                    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+                    
+                    // Actualizo los elementos del DOM
+                    document.getElementById('days').innerText = days;
+                    document.getElementById('hours').innerText = hours;
+                    document.getElementById('minutes').innerText = minutes;
+                    document.getElementById('seconds').innerText = seconds;
+                }
+                
+                // Ejecuto la función una vez para mostrar valores iniciales
+                updateCounter();
+            }
+            
+            // Función para el efecto máquina de escribir
+            function typeWriter(text, index) {
+                // Verifico si he llegado al final del texto
+                if (index < text.length) {
+                    // Añado el siguiente carácter
+                    messageElement.innerHTML += text.charAt(index);
+                    
+                    // Llamo a la función para el siguiente carácter con un retraso
+                    setTimeout(() => {
+                        typeWriter(text, index + 1);
+                    }, 50);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
